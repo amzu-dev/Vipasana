@@ -12,7 +12,8 @@ import SwiftData
 struct VipasanaApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            MeditationSession.self,
+            OnboardingData.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,8 +26,23 @@ struct VipasanaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
         .modelContainer(sharedModelContainer)
+    }
+}
+
+struct RootView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var onboardingData: [OnboardingData]
+
+    var body: some View {
+        Group {
+            if let data = onboardingData.first, data.hasCompletedOnboarding {
+                HomeView()
+            } else {
+                OnboardingCoordinator()
+            }
+        }
     }
 }
