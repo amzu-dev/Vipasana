@@ -65,7 +65,7 @@ class AudioManager {
         let count = type == .triple ? 3 : 1
 
         for i in 0..<count {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.8) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 1.0) {
                 self.generateAndPlayBellTone()
             }
         }
