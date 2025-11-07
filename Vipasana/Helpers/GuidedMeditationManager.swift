@@ -15,6 +15,9 @@ class GuidedMeditationManager {
     // Track which voiceovers have been played
     private var playedVoiceovers: Set<Int> = []
 
+    // Settings for interval bells
+    var enableIntervalBells: Bool = true
+
     init() {
         setupAudioSession()
     }
@@ -50,9 +53,11 @@ class GuidedMeditationManager {
             playedVoiceovers.insert(0)
         }
 
-        // At 5:00 - Play gong, wait 1 second, play guided_03
+        // At 5:00 - Play gong (if enabled), wait 1 second, play guided_03
         if minutes == 5 && seconds == 0 && !playedVoiceovers.contains(5) {
-            audioManager.playBell(type: .single)
+            if enableIntervalBells {
+                audioManager.playBell(type: .single)
+            }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.playVoiceover(named: "Vipasana_guided_03")
@@ -60,9 +65,11 @@ class GuidedMeditationManager {
             playedVoiceovers.insert(5)
         }
 
-        // At 10:00 - Play gong
+        // At 10:00 - Play gong (if enabled)
         if minutes == 10 && seconds == 0 && !playedVoiceovers.contains(10) {
-            audioManager.playBell(type: .single)
+            if enableIntervalBells {
+                audioManager.playBell(type: .single)
+            }
             playedVoiceovers.insert(10)
         }
 
@@ -98,6 +105,14 @@ class GuidedMeditationManager {
         } catch {
             print("Failed to play voiceover: \(error)")
             completion?()
+        }
+    }
+
+    // Play conclusion voiceover after the ending triple bells
+    func playCompletionVoiceover() {
+        // Play after the triple bells complete (4 seconds for 3 bells at 0s, 1.5s, 3s)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.5) {
+            self.playVoiceover(named: "Vipasana_guided_04")
         }
     }
 

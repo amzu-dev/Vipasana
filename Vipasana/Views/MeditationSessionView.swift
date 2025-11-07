@@ -212,6 +212,9 @@ struct MeditationSessionView: View {
         }
 
         if isGuided {
+            // Update guided meditation manager with interval bell setting
+            guidedMeditationManager?.enableIntervalBells = settings.enableIntervalBells
+
             // Guided meditation: Play intro voiceover first
             guidedMeditationManager?.playIntroVoiceover {
                 // After intro, play three bell strokes
@@ -280,6 +283,9 @@ struct MeditationSessionView: View {
     }
 
     private func checkAndPlayIntervalBell() {
+        // Check if interval bells are enabled in settings
+        guard settings.enableIntervalBells else { return }
+
         let elapsedTime = totalDuration - timeRemaining
         let elapsedMinutes = Int(elapsedTime / 60)
 
@@ -304,12 +310,19 @@ struct MeditationSessionView: View {
         // Play three bell strokes at the end
         audioManager.playBell(type: .triple)
 
+        // For guided meditation, play conclusion voiceover after the bells
+        if isGuided {
+            guidedMeditationManager?.playCompletionVoiceover()
+        }
+
         // Mark session as completed
         currentSession?.completed = true
         try? modelContext.save()
 
         // Show completion screen after a brief delay for the bells
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        // For guided sessions, wait longer to allow the conclusion voiceover to finish
+        let delay: TimeInterval = isGuided ? 8.0 : 1.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             showingCompletion = true
         }
     }

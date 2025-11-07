@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct MeditationCompletionView: View {
     let sessionType: String
@@ -13,6 +14,25 @@ struct MeditationCompletionView: View {
 
     @State private var scale: CGFloat = 0.5
     @State private var opacity: Double = 0.0
+    @AppStorage("lastAnimationIndex") private var lastAnimationIndex: Int = 0
+
+    // Available Lottie animations
+    private let animations = [
+        "Meditating Fox",
+        "Meditating Giraffe",
+        "Meditating Koala",
+        "Meditating Tiger",
+        "Sloth meditate"
+    ]
+
+    private var currentAnimation: String {
+        // Rotate to next animation
+        let newIndex = (lastAnimationIndex + 1) % animations.count
+        DispatchQueue.main.async {
+            lastAnimationIndex = newIndex
+        }
+        return animations[newIndex]
+    }
 
     var body: some View {
         ZStack {
@@ -30,9 +50,9 @@ struct MeditationCompletionView: View {
             VStack(spacing: 40) {
                 Spacer()
 
-                // Buddha illustration
-                LaughingBuddhaView()
-                    .frame(width: 200, height: 200)
+                // Rotating meditation animal animation
+                LottieView(fileName: currentAnimation, loopMode: .loop)
+                    .frame(width: 250, height: 250)
                     .scaleEffect(scale)
                     .opacity(opacity)
 
@@ -113,106 +133,6 @@ struct StatBadge: View {
         .padding(.vertical, 12)
         .background(.white.opacity(0.15))
         .cornerRadius(12)
-    }
-}
-
-struct LaughingBuddhaView: View {
-    var body: some View {
-        ZStack {
-            // Buddha body - rounded sitting pose
-            VStack(spacing: 0) {
-                // Head
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "#FFD699") ?? .orange, Color(hex: "#FFB84D") ?? .orange],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .frame(width: 80, height: 80)
-                    .overlay {
-                        // Smiling face
-                        VStack(spacing: 8) {
-                            // Eyes - closed happy eyes
-                            HStack(spacing: 20) {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(.black)
-                                    .frame(width: 16, height: 4)
-                                    .rotationEffect(.degrees(15))
-
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(.black)
-                                    .frame(width: 16, height: 4)
-                                    .rotationEffect(.degrees(-15))
-                            }
-                            .offset(y: -5)
-
-                            // Big smile
-                            Path { path in
-                                path.move(to: CGPoint(x: 20, y: 10))
-                                path.addQuadCurve(
-                                    to: CGPoint(x: 50, y: 10),
-                                    control: CGPoint(x: 35, y: 20)
-                                )
-                            }
-                            .stroke(.black, lineWidth: 3)
-                            .frame(width: 50, height: 20)
-                            .offset(y: 5)
-                        }
-                    }
-                    .offset(y: 10)
-
-                // Body - round belly
-                Ellipse()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "#FFB84D") ?? .orange, Color(hex: "#FF9900") ?? .orange],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .frame(width: 120, height: 140)
-                    .overlay {
-                        // Robe detail
-                        Circle()
-                            .stroke(.white.opacity(0.3), lineWidth: 2)
-                            .frame(width: 90, height: 90)
-                            .offset(y: 10)
-                    }
-            }
-
-            // Arms in meditation pose
-            HStack(spacing: 120) {
-                // Left arm
-                Capsule()
-                    .fill(Color(hex: "#FFB84D") ?? .orange)
-                    .frame(width: 30, height: 80)
-                    .rotationEffect(.degrees(20))
-                    .offset(x: 5, y: 40)
-
-                // Right arm
-                Capsule()
-                    .fill(Color(hex: "#FFB84D") ?? .orange)
-                    .frame(width: 30, height: 80)
-                    .rotationEffect(.degrees(-20))
-                    .offset(x: -5, y: 40)
-            }
-
-            // Glow/aura effect
-            Circle()
-                .stroke(
-                    LinearGradient(
-                        colors: [.yellow.opacity(0.3), .orange.opacity(0.2), .clear],
-                        startPoint: .center,
-                        endPoint: .bottom
-                    ),
-                    lineWidth: 15
-                )
-                .frame(width: 180, height: 180)
-                .blur(radius: 10)
-        }
-        .frame(width: 200, height: 200)
     }
 }
 

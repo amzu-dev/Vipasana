@@ -12,6 +12,7 @@ struct BreathingSettings: Codable {
     var circleColorHex: String = "#F5F5DC" // Beige/Sand default
     var inhaleDuration: Double = 6.0
     var exhaleDuration: Double = 6.0
+    var enableIntervalBells: Bool = true // Toggle for 5-minute interval bells during meditation
 
     var backgroundColor: Color {
         Color(hex: backgroundColorHex) ?? .mint

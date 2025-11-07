@@ -117,6 +117,21 @@ struct SettingsView: View {
                             .font(.caption)
                     }
 
+                    Section {
+                        Toggle(isOn: $settings.enableIntervalBells) {
+                            HStack {
+                                Image(systemName: "bell.fill")
+                                    .foregroundColor(.orange)
+                                Text("Interval Bell Sounds")
+                            }
+                        }
+                    } header: {
+                        Text("Sound Settings")
+                    } footer: {
+                        Text("When enabled, a single bell will sound every 5 minutes during meditation. Beginning and ending triple bells will always play.")
+                            .font(.caption)
+                    }
+
                     Section("Appearance") {
                         ColorPicker("Background Color", selection: $backgroundColor)
                             .onChange(of: backgroundColor) { _, newValue in
