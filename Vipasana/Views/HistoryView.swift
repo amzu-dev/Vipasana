@@ -19,7 +19,7 @@ struct HistoryView: View {
     ) private var completedSessions: [MeditationSession]
 
     @State private var selectedMonth = Date()
-    @State private var selectedDate: Date?
+    @State private var selectedDate: Date? = Date()
 
     private let calendar = Calendar.current
     private let columns = Array(repeating: GridItem(.flexible()), count: 7)
