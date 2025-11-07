@@ -50,7 +50,7 @@ class AudioManager {
         let soundID: SystemSoundID = 1013
 
         for i in 0..<count {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 1.5) {
                 AudioServicesPlaySystemSound(soundID)
 
                 // Add haptic feedback for better user experience
@@ -65,7 +65,7 @@ class AudioManager {
         let count = type == .triple ? 3 : 1
 
         for i in 0..<count {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 1.5) {
                 self.generateAndPlayBellTone()
             }
         }
