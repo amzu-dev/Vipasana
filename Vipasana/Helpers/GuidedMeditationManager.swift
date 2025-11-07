@@ -66,15 +66,11 @@ class GuidedMeditationManager {
             playedVoiceovers.insert(10)
         }
 
-        // TODO: At 15:00 - Play conclusion voiceover (to be added later)
-        // User needs to create the MP3 file: Vipasana_guided_conclusion.mp3
-        // Uncomment this when ready:
-        /*
+        // At 15:00 - Play conclusion voiceover
         if minutes == 15 && seconds == 0 && !playedVoiceovers.contains(15) {
-            playVoiceover(named: "Vipasana_guided_conclusion")
+            playVoiceover(named: "Vipasana_guided_04")
             playedVoiceovers.insert(15)
         }
-        */
     }
 
     private func playVoiceover(named fileName: String, completion: (() -> Void)? = nil) {
