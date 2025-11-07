@@ -152,7 +152,7 @@ struct MeditationSessionView: View {
 
                         // Stop button
                         Button {
-                            stopMeditation()
+                            showExitConfirmation = true
                         } label: {
                             ZStack {
                                 Circle()
