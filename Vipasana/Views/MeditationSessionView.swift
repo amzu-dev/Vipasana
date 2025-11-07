@@ -217,8 +217,8 @@ struct MeditationSessionView: View {
                 // After intro, play three bell strokes
                 self.audioManager.playBell(type: .triple)
 
-                // Start timer and breathing after bells complete
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                // Start timer and breathing after bells complete (5 seconds for the bells at 0s, 2s, 4s)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                     self.breathingStarted = true
                     self.startTimer()
                 }
@@ -226,11 +226,11 @@ struct MeditationSessionView: View {
         } else {
             // Regular meditation: Wait 3 seconds then play bells
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                // Play three bell strokes (takes 3 seconds total: 0s, 1s, 2s)
+                // Play three bell strokes (takes 5 seconds total: 0s, 2s, 4s)
                 self.audioManager.playBell(type: .triple)
 
-                // Start timer and breathing after bells complete (3 seconds for the bells)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                // Start timer and breathing after bells complete (5 seconds for the bells)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                     self.breathingStarted = true
                     self.startTimer()
                 }
