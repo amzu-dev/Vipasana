@@ -69,6 +69,8 @@ struct MeditationSessionView: View {
                         Image(systemName: "xmark.circle.fill")
                             .font(.title2)
                             .foregroundColor(.white.opacity(0.8))
+                            .frame(width: 44, height: 44)
+                            .contentShape(Rectangle())
                     }
                     Spacer()
                     Text(sessionType.uppercased())
