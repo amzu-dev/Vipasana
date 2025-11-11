@@ -8,6 +8,7 @@
 import Foundation
 import StoreKit
 import SwiftUI
+import Combine
 
 /// Manages In-App Purchases using StoreKit 2
 @MainActor
@@ -71,7 +72,7 @@ class StoreKitManager: ObservableObject {
     // MARK: - Purchase
 
     /// Purchase a product
-    func purchase(_ product: Product) async throws -> Transaction? {
+    func purchase(_ product: Product) async throws -> StoreKit.Transaction? {
         isLoading = true
         errorMessage = nil
 
@@ -224,7 +225,7 @@ class StoreKitManager: ObservableObject {
     /// Listen for transaction updates
     private func listenForTransactions() -> Task<Void, Error> {
         return Task.detached {
-            for await result in Transaction.updates {
+            for await result in StoreKit.Transaction.updates {
                 do {
                     let transaction = try self.checkVerified(result)
 
@@ -286,9 +287,9 @@ class StoreKitManager: ObservableObject {
     }
 }
 
-// MARK: - Product.SubscriptionInfo.State Priority Extension
+// MARK: - Product.SubscriptionInfo.RenewalState Priority Extension
 
-private extension Product.SubscriptionInfo.State {
+private extension Product.SubscriptionInfo.RenewalState {
     /// Priority of subscription states (higher = better)
     var priority: Int {
         switch self {
